@@ -1,0 +1,47 @@
+specVersion: 0.0.1
+schema:
+  file: ./schema.graphql
+dataSources:
+  - kind: ethereum/contract
+    name: Contract
+    network: mainnet
+    source:
+      address: "0xe4605d46Fd0B3f8329d936a8b258D69276cBa264"
+      abi: Contract
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.2
+      language: wasm/assemblyscript
+      entities:
+        - ApprovalForAll
+        - MinterAdded
+        - MinterRemoved
+        - OwnershipTransferred
+        - TransferBatch
+        - TransferSingle
+        - URI
+        - WhitelistAdminAdded
+        - WhitelistAdminRemoved
+      abis:
+        - name: Contract
+          file: ./abis/Contract.json
+      eventHandlers:
+        - event: ApprovalForAll(indexed address,indexed address,bool)
+          handler: handleApprovalForAll
+        - event: MinterAdded(indexed address)
+          handler: handleMinterAdded
+        - event: MinterRemoved(indexed address)
+          handler: handleMinterRemoved
+        - event: OwnershipTransferred(indexed address,indexed address)
+          handler: handleOwnershipTransferred
+        - event: TransferBatch(indexed address,indexed address,indexed address,uint256[],uint256[])
+          handler: handleTransferBatch
+        - event: TransferSingle(indexed address,indexed address,indexed address,uint256,uint256)
+          handler: handleTransferSingle
+        - event: URI(string,indexed uint256)
+          handler: handleURI
+        - event: WhitelistAdminAdded(indexed address)
+          handler: handleWhitelistAdminAdded
+        - event: WhitelistAdminRemoved(indexed address)
+          handler: handleWhitelistAdminRemoved
+      file: ./src/mapping.ts
