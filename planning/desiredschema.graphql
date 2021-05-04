@@ -1,0 +1,73 @@
+type Account @entity {
+	id:                           ID!
+	balances:                     [Balance!]
+    farmings:                     [Farming!] "Podría ser un balance?"
+    bids:                         [Bid!]
+    nfts:                         [Nfts!]
+}
+
+type Balance @entity {
+	id:                           ID!
+	token:                        Token!
+	account:                      Account!
+	value:                        BigInt!
+}
+
+type Farming @entity {
+    id:                           ID!
+    account:                      Account!
+    token:                        Token!
+    amount:                       BigInt!
+}
+
+type Token @entity {
+	id:                           ID!
+	identifier:                   BigInt!
+}
+
+type Auction @entity {
+    id:                           ID!
+    nft:                          Nft! "token?"
+    highestBid:                   Bid
+    PastBids:                     [Bid!]
+    isLive:                       Boolean
+}
+
+type Bid @entity {
+    id:                           ID!
+    account:                      Account!
+    amount:                       BigInt!
+}
+
+type Artist @entity {
+    id:                           ID!
+    account:                      Account!
+    Name:                         String!
+    Nfts:                         [Nft!]
+    NftsCount:                    BigInt!
+    DropsAndAuctions:             [Nft!]
+}
+
+type Nft @entity {
+    id:                           ID!
+    artist:                       Artist!
+    owner:                        Account
+    CurrentAuction:               Auction
+    PastAuctions:                 [Auction!]
+    supply:                       BigInt
+    relatedNifties:               [Nft]
+    metadata:                     String "?"
+}
+
+type Community @entity {
+    id:                           ID!
+    name:                         String!
+    nifties:                      [Nft!]
+    DropsAndAuctions:             [Nft!]
+}
+
+type MemeOriginal @entity {  "seems to be a kind of special community"
+    id:                           ID!
+    nifties:                      [Nft!]
+    DropsAndAuctions:             [Nft!]
+}
