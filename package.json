@@ -4,10 +4,10 @@
   "scripts": {
     "codegen": "graph codegen",
     "build": "graph build",
-    "deploy": "graph deploy --node https://api.thegraph.com/deploy/ --ipfs https://api.thegraph.com/ipfs/ GabrielCamba/Subgraphito",
-    "create-local": "graph create --node http://localhost:8020/ GabrielCamba/Subgraphito",
-    "remove-local": "graph remove --node http://localhost:8020/ GabrielCamba/Subgraphito",
-    "deploy-local": "graph deploy --node http://localhost:8020/ --ipfs http://localhost:5001 GabrielCamba/Subgraphito"
+    "deploy": "graph deploy --node https://api.thegraph.com/deploy/ --ipfs https://api.thegraph.com/ipfs/ protofire/memeltd",
+    "create-local": "graph create --node http://localhost:8020/ protofire/memeltd",
+    "remove-local": "graph remove --node http://localhost:8020/ protofire/memeltd",
+    "deploy-local": "graph deploy --node http://localhost:8020/ --ipfs http://localhost:5001 protofire/memeltd"
   },
   "dependencies": {
     "@graphprotocol/graph-cli": "0.19.0",
