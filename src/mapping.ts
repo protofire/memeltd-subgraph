@@ -9,6 +9,9 @@ import {
 	Token,
 	Balance,
 	Transfer,
+	Artist,
+	MemeLTDInfo,
+	WhitelistAdmin
 } from '../generated/schema'
 
 import {
@@ -165,25 +168,81 @@ export function handleURI(event: URIEvent): void
 
 export function handleOwnershipTransferred(event: OwnershipTransferred): void
 {
-	//TODO
+	let prev = event.params.previousOwner.toHex()
+	let current = event.params.newOwner.toHex()
+
+	let memeLtdInfo = MemeLTDInfo.load(constants.ADDRESS_ZERO)
+	let prevAccount = new Account(prev)
+	let currentAccount = new Account(current)
+
+	if(memeLtdInfo == null) {
+		memeLtdInfo = new MemeLTDInfo(constants.ADDRESS_ZERO)
+		memeLtdInfo.previousOwners = []
+	}
+
+	memeLtdInfo.owner = currentAccount.id
+	memeLtdInfo.previousOwners.push(prevAccount.id)
+
+	prevAccount.save()
+	currentAccount.save()
+	memeLtdInfo.save()
 }
 
 export function handleMinterAdded(event: MinterAdded): void
 {
-	//TODO
+	// assuming minter is the artist
+	let accountId = event.params.account.toHex()
+	let account = new Account(accountId)
+	let artist = new Artist(accountId)
+	artist.account = account.id
+	artist.removed = false
+	artist.save()
+	account.save()
 }
 
 export function handleWhitelistAdminAdded(event: WhitelistAdminAdded): void
 {
-	//TODO
+	let whitelistAdminAddedId = event.params.account.toHex()
+
+	let whitelistAdminAdded = new WhitelistAdmin(whitelistAdminAddedId)
+	let account = new Account(whitelistAdminAddedId)
+	whitelistAdminAdded.isStillAdmin = true
+	whitelistAdminAdded.account = account.id
+
+
+	let memeLtdInfo = getOrCreateMemeLtdInfo()
+	memeLtdInfo.whitelistAdmins.push(whitelistAdminAdded.id)
+
+	whitelistAdminAdded.save()
+	account.save()
+	memeLtdInfo.save()
 }
 
 export function handleMinterRemoved(event: MinterRemoved): void
 {
-	//TODO
+	let accountId = event.params.account.toHex()
+	let artist = Artist.load(accountId)
+	artist.removed = true
+	artist.save()
 }
 
 export function handleWhitelistAdminRemoved(event: WhitelistAdminRemoved): void
 {
-	//TODO
+	let whitelistAdminRemovedId = event.params.account.toHex()
+	let whitelistAdminRemoved = WhitelistAdmin.load(whitelistAdminRemovedId)
+	whitelistAdminRemoved.isStillAdmin = false
+
+	whitelistAdminRemoved.save()
+}
+
+function getOrCreateMemeLtdInfo(): MemeLTDInfo {
+	let memeLtdInfo = MemeLTDInfo.load(constants.ADDRESS_ZERO)
+
+	if(memeLtdInfo == null) {
+		memeLtdInfo = new MemeLTDInfo(constants.ADDRESS_ZERO)
+		memeLtdInfo.previousOwners = []
+		memeLtdInfo.whitelistAdmins = []
+	}
+
+	return memeLtdInfo as MemeLTDInfo
 }

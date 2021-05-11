@@ -85,3 +85,24 @@ type PersistentString @entity {
 	id:                           ID!
 	value:                        String!
 }
+
+type Artist @entity {
+    id:                           ID!
+    account:                      Account! 
+	removed:					  Boolean!
+}
+
+type MemeLTDInfo @entity {
+	id:                            ID!
+	"this is the ownership for some functions such as removeMinter or whitelistAdmin"
+	owner:                         Account!
+	previousOwners:				   [Account!]
+	"whitelistAdmins"
+	whitelistAdmins: 			   [WhitelistAdmin!]
+}
+
+type WhitelistAdmin @entity {
+	id:							   ID!
+	account:					   Account!
+	isStillAdmin:				   Boolean!
+}

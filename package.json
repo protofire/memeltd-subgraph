@@ -1,6 +1,6 @@
 {
-  "name": "Subgraphito",
-  "license": "UNLICENSED",
+  "name": "MemeLtd",
+  "license": "MIT",
   "scripts": {
     "codegen": "graph codegen",
     "build": "graph build",

@@ -1,5 +1,6 @@
 type Account @entity {
 	id:                           ID!
+    address:                      Bytes!        "----------------------------------------------"
 	balances:                     [Balance!]
     farmings:                     [Farming!] "Podría ser un balance?"
     bids:                         [Bid!]
@@ -70,4 +71,21 @@ type MemeOriginal @entity {  "seems to be a kind of special community"
     id:                           ID!
     nifties:                      [Nft!]
     DropsAndAuctions:             [Nft!]
+}
+
+type Transfer @entity {
+	"Internal ID used for indexation"
+	id: ID!
+	"Seller account"
+	from: Account
+	"Buyer account"
+	to: Account
+	"Original or Print traded"
+	token: Token
+	"Amount of tokens or ether"
+	amount: BigInt
+	"Transaction creation timestamp"
+	timestamp: BigInt!
+	"Current transaction type"
+	type: TranasctionType!
 }
