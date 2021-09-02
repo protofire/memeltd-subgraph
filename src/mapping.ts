@@ -158,11 +158,13 @@ export function handleTransferBatch(event: TransferBatchEvent): void
 
 export function handleURI(event: URIEvent): void
 {
+	const baseUrl = "https://api.dontbuymeme.com/memes/"
 	let registry = new TokenRegistry(event.address.toHex())
 	registry.save()
 
 	let token = fetchToken(registry, event.params._id)
-	token.URI = event.params._uri
+	token.URI = baseUrl + event.params._id.toString();
+	// token.URI = event.params._uri; -------> this line is commented due to an error when indexing.
 	token.save()
 }
 
